@@ -17,10 +17,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final today = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return new Scaffold(
       backgroundColor: Color(0xFFE9E9E9),
       appBar: new AppBar(

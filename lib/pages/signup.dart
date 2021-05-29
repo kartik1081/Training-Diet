@@ -10,9 +10,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   TextEditingController name = TextEditingController();
-
   TextEditingController email = TextEditingController();
-
   TextEditingController password = TextEditingController();
 
   @override
