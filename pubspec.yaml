@@ -27,6 +27,12 @@ dependencies:
   cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.2
   date_format: ^2.0.2
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/diet.png"
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +58,7 @@ flutter:
     - assets/back_muscle.png
     - assets/biceps.png
     - assets/k.jpg
+    - assets/google.jpg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

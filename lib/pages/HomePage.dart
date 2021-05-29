@@ -1,11 +1,14 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:training/modles/meal.dart';
+import 'package:training/pages/profile.dart';
 import 'package:training/pages/workout.dart';
 import 'package:training/widgets/ingredient_progress.dart';
 import 'package:training/widgets/mealCard.dart';
 import 'package:date_format/date_format.dart';
 import 'package:training/widgets/radialprogress.dart';
+
+import 'signin.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,11 +23,95 @@ class _HomePageState extends State<HomePage> {
     final width = MediaQuery.of(context).size.width;
     return new Scaffold(
       backgroundColor: Color(0xFFE9E9E9),
+      appBar: new AppBar(
+        backgroundColor: Color(0xFF200087),
+        elevation: 0,
+        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16),
+          child: new Column(
+            children: [
+              new Text(
+                "${formatDate(today, [dd, '-', mm, '-', yyyy])}",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Colors.white60),
+              ),
+              new SizedBox(
+                height: 3,
+              ),
+              new Text(
+                "Hello, Kartik",
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          new OpenContainer(
+            closedColor: Color(0xFF20087),
+            transitionDuration: new Duration(milliseconds: 200),
+            openBuilder: (context, action) {
+              return new Profile();
+            },
+            closedBuilder: (context, VoidCallback openContainer) {
+              return new GestureDetector(
+                onTap: openContainer,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: new CircleAvatar(
+                    backgroundImage: new AssetImage("assets/k.jpg"),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: [
+            new UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF200087),
+              ),
+              accountName: new Text("Kartik Nakrani"),
+              accountEmail: new Text("knakrani.1081@gmail.com"),
+              currentAccountPicture: new CircleAvatar(
+                backgroundImage: new AssetImage("assets/k.jpg"),
+              ),
+            ),
+            new ListTile(
+              title: new Text("Setting"),
+              leading: new Icon(Icons.settings),
+            ),
+            new Divider(),
+            new ListTile(
+              title: new Text("Log Out"),
+              leading: new Icon(Icons.logout),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => new SignIn(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      ),
       body: new Stack(
         children: [
           Positioned(
             top: 0,
-            height: height * 0.36,
+            height: height * 0.25,
             left: 0,
             right: 0,
             child: ClipRRect(
@@ -37,27 +124,6 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ListTile(
-                      title: Text(
-                        "${formatDate(today, [dd, '-', mm, '-', yyyy])}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 18,
-                        ),
-                      ),
-                      subtitle: Text(
-                        "Hello, Kartik",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 26,
-                          color: Colors.black,
-                        ),
-                      ),
-                      trailing: ClipOval(child: Image.asset("assets/k.jpg")),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Row(
                       children: <Widget>[
                         RadialProgress(
@@ -110,11 +176,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: height * 0.38,
+            top: height * 0.27,
             right: 0,
             left: 0,
             child: new Container(
-              color: Colors.grey[200],
+              color: Color(0xFFE9E9E9),
               height: height * 0.55,
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   new Expanded(
                     child: new OpenContainer(
-                      closedColor: const Color(0xFFE9E9E9),
+                      closedColor: Color(0xFFE9E9E9),
                       closedElevation: 0,
                       transitionType: ContainerTransitionType.fadeThrough,
                       transitionDuration: new Duration(milliseconds: 700),
