@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:training/services/flutterfire.dart';
 
-import '../main.dart';
 import 'signup.dart';
 
 class SignIn extends StatefulWidget {
@@ -48,6 +47,7 @@ class _SignInState extends State<SignIn> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         new TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           controller: email,
                           cursorHeight: 22.0,
                           decoration: new InputDecoration(
@@ -71,6 +71,7 @@ class _SignInState extends State<SignIn> {
                           height: 10.0,
                         ),
                         new TextFormField(
+                          keyboardType: TextInputType.visiblePassword,
                           controller: password,
                           cursorHeight: 30.0,
                           decoration: new InputDecoration(
@@ -160,7 +161,9 @@ class _SignInState extends State<SignIn> {
                           backgroundColor:
                               MaterialStateProperty.all(Colors.white),
                           elevation: MaterialStateProperty.all(7.0)),
-                      onPressed: () {},
+                      onPressed: () {
+                        _flutterFire.googleSignIn(context);
+                      },
                       child: new Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -186,7 +189,9 @@ class _SignInState extends State<SignIn> {
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                         elevation: MaterialStateProperty.all(7.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        // _flutterFire.signInWithFacebook(context);
+                      },
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,

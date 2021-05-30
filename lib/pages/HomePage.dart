@@ -1,9 +1,10 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:training/modles/meal.dart';
 import 'package:training/pages/profile.dart';
 import 'package:training/pages/workout.dart';
+import 'package:training/services/flutterfire.dart';
 import 'package:training/widgets/ingredient_progress.dart';
 import 'package:training/widgets/mealCard.dart';
 import 'package:date_format/date_format.dart';
@@ -17,13 +18,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late User user;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   final today = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    FlutterFire _flutterfire = FlutterFire();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
+    _auth.authStateChanges().listen((event) {
+      if (event == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => new SignIn(),
+          ),
+        );
+      }
+    });
     return new Scaffold(
       backgroundColor: Color(0xFFE9E9E9),
       appBar: new AppBar(
@@ -98,13 +111,7 @@ class _HomePageState extends State<HomePage> {
               title: new Text("Log Out"),
               leading: new Icon(Icons.logout),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => new SignIn(),
-                  ),
-                );
+                _flutterfire.signOut(context);
               },
             )
           ],
