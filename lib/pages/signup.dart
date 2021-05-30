@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training/services/flutterfire.dart';
 
 import '../main.dart';
 import 'signin.dart';
@@ -9,6 +10,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  FlutterFire _flutterFire = FlutterFire();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -146,12 +148,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       autofocus: true,
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            // ignore: non_constant_identifier_names
-                            builder: (BuildContext) => new MyApp(),
-                          ),
-                        );
+                        _flutterFire.signUp(
+                            context, name.text, email.text, password.text);
                       },
                       child: Container(
                         child: Row(

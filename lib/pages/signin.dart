@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training/services/flutterfire.dart';
 
 import '../main.dart';
 import 'signup.dart';
@@ -9,8 +10,10 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  FlutterFire _flutterFire = FlutterFire();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,12 +125,7 @@ class _SignInState extends State<SignIn> {
                       ),
                       autofocus: true,
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            // ignore: non_constant_identifier_names
-                            builder: (BuildContext) => new MyApp(),
-                          ),
-                        );
+                        _flutterFire.singIn(context, email.text, password.text);
                       },
                       child: Container(
                         child: Row(

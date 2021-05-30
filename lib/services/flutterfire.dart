@@ -6,12 +6,15 @@ import 'package:training/main.dart';
 import 'package:training/modles/users.dart';
 
 class FlutterFire {
-  late String name, email, password, imagePath;
+  // late String? name, email, password, imagePath;
+  // FlutterFire({Key? key, this.name, this.email, this.password, this.imagePath});
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseDatabase _database = FirebaseDatabase.instance;
-  Future<void> singIn(BuildContext context) async {
+  Future<void> singIn(
+      BuildContext context, String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(
+          email: email.toString(), password: password.toString());
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -27,13 +30,17 @@ class FlutterFire {
     }
   }
 
-  Future<void> signUp(BuildContext context) async {
+  Future<void> signUp(
+      BuildContext context, String name, String email, String password) async {
     try {
       await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
+          .createUserWithEmailAndPassword(
+              email: email.toString(), password: password.toString())
           .whenComplete(() {
         Users users = Users(
-            name: name, email: email, password: password, imagePath: imagePath);
+            name: name.toString(),
+            email: email.toString(),
+            password: password.toString());
         String id = _auth.currentUser!.uid;
         _database.reference().child("Users").child("$id").set(users);
         Navigator.push(

@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:training/modles/meal.dart';
 import 'package:training/pages/profile.dart';
 import 'package:training/pages/workout.dart';
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           new OpenContainer(
-            closedColor: Color(0xFF20087),
+            closedColor: const Color(0xFF200087),
             transitionDuration: new Duration(milliseconds: 200),
             openBuilder: (context, action) {
               return new Profile();
