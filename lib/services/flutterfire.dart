@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:training/modles/users.dart';
 import 'package:training/pages/HomePage.dart';
 import 'package:training/pages/signin.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -44,18 +43,17 @@ class FlutterFire {
           .createUserWithEmailAndPassword(
               email: email.toString(), password: password.toString())
           .whenComplete(() {
-        Users users = Users(
-            name: name.toString(),
-            email: email.toString(),
-            password: password.toString());
         String id = _auth.currentUser!.uid;
         _database
             .reference()
             .child("flutter-28edc-default-rtdb")
             .child("Users")
             .child("$id")
-            .set(users)
-            .asStream();
+            .set({
+          "Name": name,
+          "Email": email,
+          "Password": password,
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
