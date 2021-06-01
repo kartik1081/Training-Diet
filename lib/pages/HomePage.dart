@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage>
   late User user;
   FirebaseAuth _auth = FirebaseAuth.instance;
   late TabController tabController;
+  late DateTime currentBackPressTime;
 
   @override
   // ignore: must_call_super
@@ -42,37 +43,51 @@ class _HomePageState extends State<HomePage>
       }
     });
 
-    return new Scaffold(
-      backgroundColor: Color(0xFFE9E9E9),
-      body: new TabBarView(
-        controller: tabController,
-        children: [
-          Home(),
-          Search(),
-          Profile(),
-        ],
-      ),
-      bottomNavigationBar: new Material(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(40),
-        ),
-        color: Color(0xFF200087),
-        child: new TabBar(
-          indicatorColor: Colors.white,
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        backgroundColor: Color(0xFFE9E9E9),
+        body: new TabBarView(
           controller: tabController,
-          tabs: [
-            new Tab(
-              icon: Icon(Icons.home),
-            ),
-            new Tab(
-              icon: Icon(Icons.search),
-            ),
-            new Tab(
-              icon: Icon(Icons.person),
-            )
+          children: [
+            Home(),
+            Search(),
+            Profile(),
           ],
+        ),
+        bottomNavigationBar: new Material(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(40),
+          ),
+          color: Color(0xFF200087),
+          child: new TabBar(
+            indicatorColor: Colors.white,
+            controller: tabController,
+            tabs: [
+              new Tab(
+                icon: Icon(Icons.home),
+              ),
+              new Tab(
+                icon: Icon(Icons.search),
+              ),
+              new Tab(
+                icon: Icon(Icons.person),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+
+  // Future<bool> onWillPop() {
+  //   DateTime now = DateTime.now();
+  //   if (currentBackPressTime == null ||
+  //       now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+  //     currentBackPressTime = now;
+  //     Fluttertoast.showToast(msg: exit_warning);
+  //     return Future.value(false);
+  //   }
+  //   return Future.value(true);
+  // }
 }

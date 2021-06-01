@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:training/pages/HomePage.dart';
 import 'package:training/pages/signin.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class FlutterFire {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -44,12 +44,7 @@ class FlutterFire {
               email: email.toString(), password: password.toString())
           .whenComplete(() {
         String id = _auth.currentUser!.uid;
-        _database
-            .reference()
-            .child("flutter-28edc-default-rtdb")
-            .child("Users")
-            .child("$id")
-            .set({
+        _database.reference().child("Users").child("$id").set({
           "Name": name,
           "Email": email,
           "Password": password,
@@ -91,35 +86,39 @@ class FlutterFire {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await FirebaseAuth.instance.signInWithCredential(credential).whenComplete(
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => new HomePage(),
-            ),
-          ),
-        );
-  }
-
-  Future<void> signInWithFacebook(BuildContext context) async {
-    // Trigger the sign-in flow
-    final AccessToken result =
-        (await FacebookAuth.instance.login()) as AccessToken;
-
-    // Create a credential from the access token
-    final facebookAuthCredential =
-        FacebookAuthProvider.credential(result.token);
-
-    // Once signed in, return the UserCredential
     await FirebaseAuth.instance
-        .signInWithCredential(facebookAuthCredential)
-        .whenComplete(
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (contex) => new HomePage(),
-            ),
-          ),
-        );
+        .signInWithCredential(credential)
+        .whenComplete(() {
+      String id = _auth.currentUser!.uid;
+      _database.reference().child("Users").child("$id").set({
+        "Name": googleUser.displayName,
+        "Email": googleUser.email,
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => new HomePage(),
+        ),
+      );
+    });
   }
+
+  // Future<void> signInWithFacebook(BuildContext context) async {
+  //   final AccessToken result =
+  //       (await FacebookAuth.instance.login()) as AccessToken;
+
+  //   final facebookAuthCredential =
+  //       FacebookAuthProvider.credential(result.token);
+
+  //   await FirebaseAuth.instance
+  //       .signInWithCredential(facebookAuthCredential)
+  //       .whenComplete(
+  //         () => Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (contex) => new HomePage(),
+  //           ),
+  //         ),
+  //       );
+  // }
 }

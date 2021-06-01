@@ -166,10 +166,9 @@ class _SignUpState extends State<SignUp> {
                         if (_form.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Processing Data')));
-                        } else {
-                          _flutterFire.signUp(
-                              context, name.text, email.text, password.text);
                         }
+                        _flutterFire.signUp(
+                            context, name.text, email.text, password.text);
                       },
                       child: Container(
                         child: Row(
@@ -232,7 +231,7 @@ class _SignUpState extends State<SignUp> {
                         elevation: MaterialStateProperty.all(7.0),
                       ),
                       onPressed: () {
-                        _flutterFire.signInWithFacebook(context);
+                        // _flutterFire.signInWithFacebook(context);
                       },
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,

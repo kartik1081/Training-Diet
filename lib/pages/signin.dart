@@ -203,7 +203,7 @@ class _SignInState extends State<SignIn> {
                         elevation: MaterialStateProperty.all(7.0),
                       ),
                       onPressed: () {
-                        _flutterFire.signInWithFacebook(context);
+                        // _flutterFire.signInWithFacebook(context);
                       },
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
