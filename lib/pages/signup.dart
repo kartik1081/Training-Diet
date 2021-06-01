@@ -10,6 +10,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   FlutterFire _flutterFire = FlutterFire();
+  final _form = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -17,7 +18,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Colors.red[600],
       body: new Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,10 +46,15 @@ class _SignUpState extends State<SignUp> {
                     height: 20.0,
                   ),
                   new Form(
+                    key: _form,
                     child: new Column(
                       children: [
                         new TextFormField(
-                          autofocus: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your name";
+                            }
+                          },
                           controller: name,
                           cursorHeight: 22.0,
                           decoration: new InputDecoration(
@@ -72,6 +78,11 @@ class _SignUpState extends State<SignUp> {
                           height: 10.0,
                         ),
                         new TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your email";
+                            }
+                          },
                           controller: email,
                           cursorHeight: 30.0,
                           decoration: new InputDecoration(
@@ -95,6 +106,11 @@ class _SignUpState extends State<SignUp> {
                           height: 10.0,
                         ),
                         new TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your password";
+                            }
+                          },
                           controller: password,
                           decoration: new InputDecoration(
                             hintText: "Enter your password",
@@ -142,14 +158,18 @@ class _SignUpState extends State<SignUp> {
                     child: new ElevatedButton(
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(7.0),
-                        overlayColor:
-                            MaterialStateProperty.all(Color(0xFF200087)),
+                        overlayColor: MaterialStateProperty.all(Colors.black),
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       autofocus: true,
                       onPressed: () {
-                        _flutterFire.signUp(
-                            context, name.text, email.text, password.text);
+                        if (_form.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Processing Data')));
+                        } else {
+                          _flutterFire.signUp(
+                              context, name.text, email.text, password.text);
+                        }
                       },
                       child: Container(
                         child: Row(
@@ -212,7 +232,7 @@ class _SignUpState extends State<SignUp> {
                         elevation: MaterialStateProperty.all(7.0),
                       ),
                       onPressed: () {
-                        // _flutterFire.signInWithFacebook(context);
+                        _flutterFire.signInWithFacebook(context);
                       },
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,

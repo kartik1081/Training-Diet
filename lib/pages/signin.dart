@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:training/services/flutterfire.dart';
 
@@ -16,8 +17,13 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.redAccent,
-      body: new Center(
+      backgroundColor: Colors.red[600],
+      body:
+          // new Theme(data: ThemeData(primarySwatch: Colors.red,
+          // brightness: Brightness.light,
+          // accentColor: Colors.redAccent),
+          // child: new Image.asset("asset/k.jpg"),),
+          new Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -47,7 +53,11 @@ class _SignInState extends State<SignIn> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         new TextFormField(
-                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your email";
+                            }
+                          },
                           controller: email,
                           cursorHeight: 22.0,
                           decoration: new InputDecoration(
@@ -71,7 +81,11 @@ class _SignInState extends State<SignIn> {
                           height: 10.0,
                         ),
                         new TextFormField(
-                          keyboardType: TextInputType.visiblePassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your password";
+                            }
+                          },
                           controller: password,
                           cursorHeight: 30.0,
                           decoration: new InputDecoration(
@@ -120,8 +134,7 @@ class _SignInState extends State<SignIn> {
                     child: new ElevatedButton(
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(7.0),
-                        overlayColor:
-                            MaterialStateProperty.all(Color(0xFF200087)),
+                        overlayColor: MaterialStateProperty.all(Colors.black),
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       autofocus: true,
@@ -190,7 +203,7 @@ class _SignInState extends State<SignIn> {
                         elevation: MaterialStateProperty.all(7.0),
                       ),
                       onPressed: () {
-                        // _flutterFire.signInWithFacebook(context);
+                        _flutterFire.signInWithFacebook(context);
                       },
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,

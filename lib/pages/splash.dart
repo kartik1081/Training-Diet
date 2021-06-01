@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training/pages/HomePage.dart';
-
-import 'signin.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -14,15 +11,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // TODO: implement initState
+    // ignore: todo
     super.initState();
     Timer(
       Duration(seconds: 5),
       () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => new HomePage(),
-        ),
+        MaterialPageRoute(builder: (context) => new HomePage()),
       ),
     );
   }
