@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training/pages/home.dart';
 import 'package:training/pages/profile.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 
 import 'search.dart';
 import 'signin.dart';
@@ -43,11 +44,14 @@ class _HomePageState extends State<HomePage>
       }
     });
 
-    return new WillPopScope(
-      onWillPop: () async => false,
-      child: new Scaffold(
-        backgroundColor: Color(0xFFE9E9E9),
-        body: new TabBarView(
+    return new Scaffold(
+      backgroundColor: Color(0xFFE9E9E9),
+      body: new DoubleBackToCloseApp(
+        snackBar: SnackBar(
+            content: new Text(
+          "Tap back again to leave",
+        )),
+        child: new TabBarView(
           controller: tabController,
           children: [
             Home(),
@@ -55,26 +59,26 @@ class _HomePageState extends State<HomePage>
             Profile(),
           ],
         ),
-        bottomNavigationBar: new Material(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(40),
-          ),
-          color: Color(0xFF200087),
-          child: new TabBar(
-            indicatorColor: Colors.white,
-            controller: tabController,
-            tabs: [
-              new Tab(
-                icon: Icon(Icons.home),
-              ),
-              new Tab(
-                icon: Icon(Icons.search),
-              ),
-              new Tab(
-                icon: Icon(Icons.person),
-              )
-            ],
-          ),
+      ),
+      bottomNavigationBar: new Material(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+        color: Color(0xFF200087),
+        child: new TabBar(
+          indicatorColor: Colors.white,
+          controller: tabController,
+          tabs: [
+            new Tab(
+              icon: Icon(Icons.home),
+            ),
+            new Tab(
+              icon: Icon(Icons.search),
+            ),
+            new Tab(
+              icon: Icon(Icons.person),
+            )
+          ],
         ),
       ),
     );

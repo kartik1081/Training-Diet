@@ -93,6 +93,7 @@ class FlutterFire {
       _database.reference().child("Users").child("$id").set({
         "Name": googleUser.displayName,
         "Email": googleUser.email,
+        "ProfilePic": googleUser.photoUrl,
       });
       Navigator.push(
         context,

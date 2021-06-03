@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:training/modles/meal.dart';
 import 'package:training/pages/setting.dart';
 import 'package:training/services/flutterfire.dart';
 import 'package:training/widgets/ingredient_progress.dart';
 import 'package:training/widgets/mealCard.dart';
 import 'package:training/widgets/radialprogress.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'workout.dart';
 
@@ -16,7 +22,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late File _image;
+  final picker = ImagePicker();
   final today = DateTime.now();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseDatabase _database = FirebaseDatabase.instance;
+  FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future getImage() async {
+    try {
+      final pickedImage = await picker.getImage(source: ImageSource.gallery);
+      setState(() async {
+        if (pickedImage != null) {
+          _image = File(pickedImage.path);
+          String id = _auth.currentUser!.uid;
+          print("start");
+          Reference ref = _storage.ref().child("Images").child("$id");
+          // ignore: unused_local_variable
+          UploadTask _task = ref.putFile(_image);
+
+          // ignore: unused_local_variable
+          final url = await ref.getDownloadURL().then((value) => {
+                _database
+                    .reference()
+                    .child("Users")
+                    .child("$id")
+                    .update({"ProfilePic": value})
+              });
+
+          print("end");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +124,13 @@ class _HomeState extends State<Home> {
               ),
               accountName: new Text("Kartik Nakrani"),
               accountEmail: new Text("knakrani.1081@gmail.com"),
-              currentAccountPicture: new CircleAvatar(
-                backgroundImage: new AssetImage("assets/k.jpg"),
+              currentAccountPicture: new GestureDetector(
+                onTap: () {
+                  getImage();
+                },
+                child: new CircleAvatar(
+                  backgroundImage: new AssetImage("assets/k.jpg"),
+                ),
               ),
             ),
             new ListTile(
