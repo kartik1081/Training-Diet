@@ -23,7 +23,7 @@ class _SignUpState extends State<SignUp> {
       body: new Stack(
         children: [
           new Positioned(
-            top: height * 0.25,
+            top: height * 0.17,
             height: height * 40,
             right: 20,
             left: 20,
