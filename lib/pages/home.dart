@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:training/modles/meal.dart';
+import 'package:training/modles/users.dart';
 import 'package:training/pages/setting.dart';
 import 'package:training/services/flutterfire.dart';
 import 'package:training/widgets/ingredient_progress.dart';
@@ -16,20 +17,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'workout.dart';
 
+// ignore: must_be_immutable
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  // ignore: unused_element
   late File _image;
   final picker = ImagePicker();
   final today = DateTime.now();
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseDatabase _database = FirebaseDatabase.instance;
   FirebaseStorage _storage = FirebaseStorage.instance;
+  List<Users> list = [];
 
-  Future getImage() async {
+  Future setImage() async {
     try {
       final pickedImage = await picker.getImage(source: ImageSource.gallery);
       setState(() async {
@@ -63,6 +67,7 @@ class _HomeState extends State<Home> {
     FlutterFire _flutterfire = FlutterFire();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Color(0xFFE9E9E9),
       appBar: new AppBar(
@@ -72,6 +77,7 @@ class _HomeState extends State<Home> {
         title: Padding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 16),
           child: new Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               new Text(
                 "${formatDate(today, [dd, '-', mm, '-', yyyy])}",
@@ -126,11 +132,8 @@ class _HomeState extends State<Home> {
               accountEmail: new Text("knakrani.1081@gmail.com"),
               currentAccountPicture: new GestureDetector(
                 onTap: () {
-                  getImage();
+                  setImage();
                 },
-                child: new CircleAvatar(
-                  backgroundImage: new AssetImage("assets/k.jpg"),
-                ),
               ),
             ),
             new ListTile(

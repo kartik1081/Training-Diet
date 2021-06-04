@@ -9,16 +9,19 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  late String name, profilePic;
   @override
   void initState() {
     // ignore: todo
     super.initState();
     Timer(
       Duration(seconds: 5),
-      () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => new HomePage()),
-      ),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => new HomePage()),
+        );
+      },
     );
   }
 

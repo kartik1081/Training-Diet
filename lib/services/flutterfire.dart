@@ -122,4 +122,47 @@ class FlutterFire {
   //         ),
   //       );
   // }
+
+  Future<DataSnapshot?> getName() async {
+    DataSnapshot snapShot;
+    String id = _auth.currentUser!.uid;
+    try {
+      await _database
+          .reference()
+          .child("Users")
+          .child("$id")
+          .child("Name")
+          .once()
+          .then(
+        (DataSnapshot snapshot) {
+          snapShot = snapshot;
+          return snapShot;
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<DataSnapshot?> getImage() async {
+    DataSnapshot snapShot;
+    String id = _auth.currentUser!.uid;
+    try {
+      await _database
+          .reference()
+          .child("Users")
+          .child("$id")
+          .child("ProfilePic")
+          .once()
+          .then(
+        (DataSnapshot snapshot) {
+          snapShot = snapshot;
+          return snapShot;
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 }
