@@ -193,6 +193,9 @@ class _SignUpState extends State<SignUp> {
                             onPressed: () {
                               _flutterFire.signUp(context, name.text,
                                   email.text, password.text);
+                              name.clear();
+                              email.clear();
+                              password.clear();
                             },
                             child: new Text("Sign Up"),
                           ),

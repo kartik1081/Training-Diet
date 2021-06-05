@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,7 +32,6 @@ class _HomeState extends State<Home> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseDatabase _database = FirebaseDatabase.instance;
   FirebaseStorage _storage = FirebaseStorage.instance;
-  List<Users> list = [];
 
   Future setImage() async {
     try {
@@ -65,6 +65,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     FlutterFire _flutterfire = FlutterFire();
+    String id = _auth.currentUser!.uid;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -89,13 +90,23 @@ class _HomeState extends State<Home> {
               new SizedBox(
                 height: 3,
               ),
-              new Text(
-                "Hello, Kartik",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 22,
-                  color: Colors.white,
-                ),
+              new FirebaseAnimatedList(
+                query: _database
+                    .reference()
+                    .child("Users")
+                    .child("$id")
+                    .child("Name"),
+                itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                    Animation<double> animation, int index) {
+                  return new Text(
+                    "Hello, ${snapshot.value[index]}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22,
+                      color: Colors.white,
+                    ),
+                  );
+                },
               ),
             ],
           ),
