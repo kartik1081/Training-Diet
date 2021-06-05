@@ -1,14 +1,13 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:training/modles/meal.dart';
-import 'package:training/modles/users.dart';
 import 'package:training/pages/setting.dart';
 import 'package:training/services/flutterfire.dart';
 import 'package:training/widgets/ingredient_progress.dart';
@@ -65,7 +64,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     FlutterFire _flutterfire = FlutterFire();
-    String id = _auth.currentUser!.uid;
+    // final String id = _auth.currentUser!.uid;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -73,7 +72,7 @@ class _HomeState extends State<Home> {
       backgroundColor: Color(0xFFE9E9E9),
       appBar: new AppBar(
         backgroundColor: Color(0xFF200087),
-        elevation: 0,
+        elevation: 10,
         centerTitle: true,
         title: Padding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 16),
@@ -90,22 +89,22 @@ class _HomeState extends State<Home> {
               new SizedBox(
                 height: 3,
               ),
-              new FirebaseAnimatedList(
-                query: _database
-                    .reference()
-                    .child("Users")
-                    .child("$id")
-                    .child("Name"),
-                itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                    Animation<double> animation, int index) {
-                  return new Text(
-                    "Hello, ${snapshot.value[index]}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  );
+              new FutureBuilder<String>(
+                future: _flutterfire.getName(),
+                initialData: '',
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return new Text(
+                      "Hello, ${snapshot.data}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
+                    );
+                  } else {
+                    return new CircularProgressIndicator();
+                  }
                 },
               ),
             ],
@@ -141,11 +140,9 @@ class _HomeState extends State<Home> {
               ),
               accountName: new Text("Kartik Nakrani"),
               accountEmail: new Text("knakrani.1081@gmail.com"),
-              currentAccountPicture: new GestureDetector(
-                onTap: () {
-                  setImage();
-                },
-              ),
+              // currentAccountPicture: new CircleAvatar(
+              //   backgroundImage: NetworkImage("assets/avatar.png", scale: 1.0),
+              // ),
             ),
             new ListTile(
                 title: new Text("Setting"),
@@ -182,59 +179,62 @@ class _HomeState extends State<Home> {
               borderRadius: const BorderRadius.vertical(
                 bottom: const Radius.circular(40),
               ),
-              child: Container(
-                color: Colors.white,
-                padding: const EdgeInsets.only(top: 20, left: 32, right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        RadialProgress(
-                          width: width * 0.4,
-                          height: width * 0.4,
-                          progress: 0.7,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            IngredientProgress(
-                              ingredient: "Protein",
-                              progress: 0.3,
-                              progressColor: Colors.green,
-                              leftAmount: 72,
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            IngredientProgress(
-                              ingredient: "Carbs",
-                              progress: 0.2,
-                              progressColor: Colors.red,
-                              leftAmount: 252,
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            IngredientProgress(
-                              ingredient: "Fat",
-                              progress: 0.1,
-                              progressColor: Colors.yellow,
-                              leftAmount: 61,
-                              width: width * 0.28,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  color: Colors.white.withOpacity(0.8),
+                  padding: const EdgeInsets.only(top: 20, left: 32, right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          RadialProgress(
+                            width: width * 0.4,
+                            height: width * 0.4,
+                            progress: 0.7,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              IngredientProgress(
+                                ingredient: "Protein",
+                                progress: 0.3,
+                                progressColor: Colors.green,
+                                leftAmount: 72,
+                                width: width * 0.28,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              IngredientProgress(
+                                ingredient: "Carbs",
+                                progress: 0.2,
+                                progressColor: Colors.red,
+                                leftAmount: 252,
+                                width: width * 0.28,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              IngredientProgress(
+                                ingredient: "Fat",
+                                progress: 0.1,
+                                progressColor: Colors.yellow,
+                                leftAmount: 61,
+                                width: width * 0.28,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

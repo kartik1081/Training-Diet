@@ -22,6 +22,16 @@ class _HomePageState extends State<HomePage>
   @override
   // ignore: must_call_super
   void initState() {
+    _auth.authStateChanges().listen((event) {
+      if (event == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => new SignIn(),
+          ),
+        );
+      }
+    });
     tabController = new TabController(length: 3, vsync: this);
   }
 
@@ -33,17 +43,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    _auth.authStateChanges().listen((event) {
-      if (event == null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => new SignIn(),
-          ),
-        );
-      }
-    });
-
     return new Scaffold(
       backgroundColor: Color(0xFFE9E9E9),
       body: new DoubleBackToCloseApp(

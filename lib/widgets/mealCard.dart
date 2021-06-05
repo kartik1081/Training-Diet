@@ -19,31 +19,32 @@ class MealCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             new Flexible(
-                fit: FlexFit.tight,
-                child: new OpenContainer(
-                  transitionDuration: new Duration(milliseconds: 700),
-                  closedShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  openBuilder: (context, _) {
-                    return new MealDeatailScreen(meal: meal);
-                  },
-                  closedBuilder: (context, openContainer) {
-                    return new GestureDetector(
-                      onTap: openContainer,
-                      child: new ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: new Image(
-                            image: AssetImage(
-                              meal.imagePath,
-                            ),
-                            width: 150,
-                            fit: BoxFit.fill,
-                            frameBuilder: null,
-                            alignment: Alignment.center),
-                      ),
-                    );
-                  },
-                )),
+              fit: FlexFit.tight,
+              child: new OpenContainer(
+                transitionDuration: new Duration(milliseconds: 700),
+                closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                openBuilder: (context, _) {
+                  return new MealDeatailScreen(meal: meal);
+                },
+                closedBuilder: (context, openContainer) {
+                  return new GestureDetector(
+                    onTap: openContainer,
+                    child: new ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: new Image(
+                          image: AssetImage(
+                            meal.imagePath,
+                          ),
+                          width: 150,
+                          fit: BoxFit.fill,
+                          frameBuilder: null,
+                          alignment: Alignment.center),
+                    ),
+                  );
+                },
+              ),
+            ),
             new Flexible(
                 fit: FlexFit.tight,
                 child: Padding(

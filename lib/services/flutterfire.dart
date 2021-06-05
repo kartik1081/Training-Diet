@@ -123,31 +123,37 @@ class FlutterFire {
   //       );
   // }
 
-  Future<DataSnapshot?> getName() async {
+  Future<String> getName() async {
+    late String name;
     String id = _auth.currentUser!.uid;
     try {
-      return await _database
+      await _database
           .reference()
           .child("Users")
           .child("$id")
           .child("Name")
-          .once();
+          .once()
+          .then((DataSnapshot snapshot) => name = snapshot.value);
     } catch (e) {
       print(e.toString());
     }
+    return name;
   }
 
-  Future<DataSnapshot?> getImage() async {
-    String id = _auth.currentUser!.uid;
-    try {
-      return await _database
-          .reference()
-          .child("Users")
-          .child("$id")
-          .child("ProfilePic")
-          .once();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  // Future<String> getImage() async {
+  //   late String imageUrl;
+  //   String id = _auth.currentUser!.uid;
+  //   try {
+  //     await _database
+  //         .reference()
+  //         .child("Users")
+  //         .child("$id")
+  //         .child("ProfilePic")
+  //         .once()
+  //         .then((DataSnapshot snapshot) => imageUrl = snapshot.value);
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  //   return imageUrl;
+  // }
 }
